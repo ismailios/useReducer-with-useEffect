@@ -1,8 +1,9 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import "./App.css";
 
 const INCREMENT = "INCREMENT";
 const DECREMENT = "DECREMENT";
+const SHOW_MESSAGE = "SHOW_MESSAGE";
 const reducer = (state, action) => {
   switch (action.type) {
     case INCREMENT:
@@ -14,6 +15,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         counter: state.counter - action.payload
+      };
+    case SHOW_MESSAGE:
+      return {
+        ...state,
+        message: "this is " + state.counter
       };
     default:
       return state;
@@ -27,6 +33,12 @@ const App = () => {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (state.counter >= 10) {
+      dispatch({ type: SHOW_MESSAGE });
+    }
+  }, [dispatch, state.counter]);
 
   return (
     <div>
